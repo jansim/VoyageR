@@ -13,3 +13,4 @@ Imports: shiny,
     shinyjs,
     miniUI,
     jsonlite
+RoxygenNote: 7.1.1
