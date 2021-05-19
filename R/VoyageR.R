@@ -1,7 +1,19 @@
-library(shiny)
-library(shinyjs)
-library(miniUI)
-
+#' Launch Voyager as a Shiny Gadget
+#'
+#' @param data Dataset to load
+#' @param browser Open in an external browser
+#' @param envir Environment to use (defaults to the global environment)
+#'
+#' @return If a visualisation has been specified its JSON will be returned as a string
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#'
+#' data("mtcars")
+#' mtcars %>%
+#'  VoyageR() %>%
+#'  vegawidget::as_vegaspec()
 VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
 
   SELECT_INPUT_NULL_STR <- c("Select Data" = "none")
@@ -52,20 +64,20 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
 
 
   # Make files in www/ available to shiny
-  addResourcePath("www", system.file("www", package="VoyageR"))
+  shiny::addResourcePath("www", system.file("www", package="VoyageR"))
   # When running locally: addResourcePath("www", "inst/www")
 
   # ==== Shiny UI & Server ====
-  ui <- miniPage(
-    useShinyjs(),
-    tags$link(rel = "stylesheet", type = "text/css", href = "www/style_voyager.css"),
-    tags$link(rel = "stylesheet", type = "text/css", href = "www/style.css"),
+  ui <- miniUI::miniPage(
+    shinyjs::useShinyjs(),
+    shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/style_voyager.css"),
+    shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/style.css"),
 
     # Left = cancel; Right = done;
-    gadgetTitleBar(
+    miniUI::gadgetTitleBar(
       title = "",
-      left = tags$div(
-        selectInput(
+      left = shiny::tags$div(
+        shiny::selectInput(
           inputId = "dataset",
           label = NULL,
           selected = selected_choice,
@@ -75,18 +87,18 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
         style = "margin: 5px;"
       )
     ),
-    miniContentPanel(
+    miniUI::miniContentPanel(
       tags$div(id = "root"),
       padding = 0
     ),
 
-    tags$script(src = "www/bundle.js"),
+    shiny::tags$script(src = "www/bundle.js"),
   )
 
   server <- function(input, output, session) {
 
     # Dataset selection
-    observeEvent(input$dataset, {
+    shiny::observeEvent(input$dataset, {
       message(paste("Selecting Dataset:", input$dataset))
 
       if (input$dataset == SELECT_INPUT_NULL_STR) {
@@ -107,17 +119,17 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
       dataset_json <- jsonlite::toJSON(data_object)
 
       # Update Dataset in voyager
-      runjs(paste0("voyagerInstance.updateData(", dataset_json, ")"))
+      shinyjs::runjs(paste0("voyagerInstance.updateData(", dataset_json, ")"))
     })
 
     # Listen for 'done' events indicating that the 'done' button has been pressed.
-    observeEvent(input$done, {
+    shiny::observeEvent(input$done, {
       # The argument to getSpec corresponds to whether or not to include data in the spec
       runjs("Shiny.setInputValue('finalSpec', JSON.stringify(voyagerInstance.getSpec(true)))")
     })
 
     # Triggered when finalSpec has been loaded (only stop app then)
-    observeEvent(input$finalSpec, {
+    shiny::observeEvent(input$finalSpec, {
       finalSpec_json <- input$finalSpec
 
       # Detect whether a visualisation has been specified (crudely, but fast)
@@ -125,9 +137,9 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
 
       # Return the final vega spec JSON
       if (has_viz) {
-        stopApp(finalSpec_json)
+        shiny::stopApp(finalSpec_json)
       } else {
-        stopApp()
+        shiny::stopApp()
       }
     })
 
@@ -137,13 +149,13 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
 
   if (browser) {
     # Open in extrnal browser
-    viewer <- browserViewer()
+    viewer <- shiny::browserViewer()
   } else {
     # Open dialog in Rstudio
-    viewer <- dialogViewer(dialogName = "VoyageR", width = 1280, height = 720)
+    viewer <- shiny::dialogViewer(dialogName = "VoyageR", width = 1280, height = 720)
   }
 
   # Launch VoyageR via shiny
-  return(runGadget(ui, server, viewer = viewer))
+  return(shiny::runGadget(ui, server, viewer = viewer))
 
 }
