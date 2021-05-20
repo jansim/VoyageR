@@ -156,8 +156,11 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
           final_output <- vegawidget::as_vegaspec(finalSpec_json)
         }
 
+        set_last_spec(final_output)
         shiny::stopApp(final_output)
       } else {
+
+        set_last_spec(NULL)
         shiny::stopApp()
       }
     })
