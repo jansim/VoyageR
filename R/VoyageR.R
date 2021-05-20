@@ -102,7 +102,7 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
       )
     ),
     miniUI::miniContentPanel(
-      tags$div(id = "root"),
+      shiny::tags$div(id = "root"),
       padding = 0
     ),
 
@@ -139,7 +139,7 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
     # Listen for 'done' events indicating that the 'done' button has been pressed.
     shiny::observeEvent(input$done, {
       # The argument to getSpec corresponds to whether or not to include data in the spec
-      runjs("Shiny.setInputValue('finalSpec', JSON.stringify(voyagerInstance.getSpec(true)))")
+      shinyjs::runjs("Shiny.setInputValue('finalSpec', JSON.stringify(voyagerInstance.getSpec(true)))")
     })
 
     # Triggered when finalSpec has been loaded (only stop app then)
