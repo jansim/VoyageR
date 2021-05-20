@@ -1,0 +1,4 @@
+Name: Launch VoyageR
+Description: Launch Voyager Web UI
+Binding: VoyageR
+Interactive: TRUE
