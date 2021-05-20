@@ -1,16 +1,19 @@
 {
-  "name": "datavoyagerjl",
+  "name": "VoyageR",
   "version": "1.0.0",
-  "description": "",
+  "description": "Voyager for R",
   "main": "main.js",
   "scripts": {
-    "build": "browserify main.js -o bundle.js --ignore font-awesome-sass-loader",
+    "build": "browserify main.js -p tinyify -o bundle.js --ignore font-awesome-sass-loader",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Anthoff",
   "license": "ISC",
   "dependencies": {
-    "browserify": "^16.2.2",
-    "datavoyager": "^2.0.0-alpha.23"
+    "datavoyager": "2.0.0-alpha.24"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "tinyify": "^3.0.0"
   }
 }
