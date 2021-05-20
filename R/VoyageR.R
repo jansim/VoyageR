@@ -45,7 +45,7 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
 
   # Prepare options / choices for data dropdown
   ls_all <- ls(envir = envir)
-  ls_dfs <- ls_all[sapply(ls_all, function (x){ is.data.frame(get(x)) })]
+  ls_dfs <- ls_all[as.logical(sapply(ls_all, function (x){ is.data.frame(get(x)) }))]
 
   if (length(ls_dfs) > 0) {
     choices_env <- paste0(SELECT_INPUT_ENV_PREFIX, ls_dfs)
