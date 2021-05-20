@@ -16,12 +16,17 @@
 #' @examples
 #' data("mtcars")
 #'
-#' # Launch app and return a vegawidget
-#' VoyageR(mtcars)
+#' # Don't run the app when testing examples
+#' if (interactive()) {
+#'   # Launch app and return a vegawidget
+#'   VoyageR(mtcars)
+#' }
 #'
-#' # Return the vega plot specification as json
-#' spec_json <- VoyageR(mtcars, format = "json")
-#' vegawidget::as_vegaspec(spec_json)
+#' if (interactive()) {
+#'   # Return the vega plot specification as json
+#'   spec_json <- VoyageR(mtcars, format = "json")
+#'   vegawidget::as_vegaspec(spec_json)
+#' }
 VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir = .GlobalEnv) {
   if (!format %in% .supportedFormats) {
     stop("Unsupported format specified.")

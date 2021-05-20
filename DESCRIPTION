@@ -6,7 +6,7 @@ Author: Jan Simson
 Maintainer: Jan Simson <VoyageR.github@simson.io>
 Description: An R wrapper package for Voyager,
     a web UI for quick plotting in exploratory data analysis.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: shiny,
