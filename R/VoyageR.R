@@ -24,7 +24,7 @@
 #' vegawidget::as_vegaspec(spec_json)
 VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir = .GlobalEnv) {
   if (!format %in% .supportedFormats) {
-    warning("Unsupported format specified.")
+    stop("Unsupported format specified.")
   }
 
   SELECT_INPUT_NULL_STR <- c("Select Data" = "none")
@@ -35,6 +35,9 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
 
   # Get the string used for the argument data using crazy R magic
   if (!is.null(data)) {
+    if (!is.data.frame(data)) {
+      stop("Unsupported data format provided. Please provide data as a dataframe.")
+    }
     label_data <- as.character(substitute(data))
 
     choice_data <- SELECT_INPUT_DATA_ARG
@@ -54,7 +57,7 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
     choices_env <- c()
 
     if (is.null(data)) {
-      warning("No data available, please ensure there are dataframes in the environment and that data is provided.")
+      stop("No data available, please ensure there are dataframes in the environment and that data is provided.")
     }
   }
 
