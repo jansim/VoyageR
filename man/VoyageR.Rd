@@ -4,14 +4,24 @@
 \alias{VoyageR}
 \title{Launch Voyager as a Shiny Gadget}
 \usage{
-VoyageR(data = NULL, browser = FALSE, envir = .GlobalEnv)
+VoyageR(
+  data = NULL,
+  format = "vegawidget",
+  browser = FALSE,
+  envir = .GlobalEnv
+)
 }
 \arguments{
 \item{data}{Dataset to load}
 
+\item{format}{In what format should plots be returned: "vegawidget" to return
+an interactive or rendered version, "json" to return the spec as a character
+in json format}
+
 \item{browser}{Open in an external browser}
 
-\item{envir}{Environment to use (defaults to the global environment)}
+\item{envir}{Environment to use when searching for datasets
+(defaults to the global environment)}
 }
 \value{
 If a visualisation has been specified its JSON will be returned as a string
@@ -20,10 +30,12 @@ If a visualisation has been specified its JSON will be returned as a string
 Launch Voyager as a Shiny Gadget
 }
 \examples{
-library(dplyr)
-
 data("mtcars")
-mtcars \%>\%
- VoyageR() \%>\%
- vegawidget::as_vegaspec()
+
+# Launch app and return a vegawidget
+VoyageR(mtcars)
+
+# Return the vega plot specification as json
+spec_json <- VoyageR(mtcars, format = "json")
+vegawidget::as_vegaspec(spec_json)
 }

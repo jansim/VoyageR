@@ -1,20 +1,31 @@
+.supportedFormats <- c("vegawidget", "json")
+
 #' Launch Voyager as a Shiny Gadget
 #'
 #' @param data Dataset to load
 #' @param browser Open in an external browser
-#' @param envir Environment to use (defaults to the global environment)
+#' @param format In what format should plots be returned: "vegawidget" to return
+#' an interactive or rendered version, "json" to return the spec as a character
+#' in json format
+#' @param envir Environment to use when searching for datasets
+#' (defaults to the global environment)
 #'
 #' @return If a visualisation has been specified its JSON will be returned as a string
 #' @export
 #'
 #' @examples
-#' library(dplyr)
-#'
 #' data("mtcars")
-#' mtcars %>%
-#'  VoyageR() %>%
-#'  vegawidget::as_vegaspec()
-VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
+#'
+#' # Launch app and return a vegawidget
+#' VoyageR(mtcars)
+#'
+#' # Return the vega plot specification as json
+#' spec_json <- VoyageR(mtcars, format = "json")
+#' vegawidget::as_vegaspec(spec_json)
+VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir = .GlobalEnv) {
+  if (!format %in% .supportedFormats) {
+    warning("Unsupported format specified.")
+  }
 
   SELECT_INPUT_NULL_STR <- c("Select Data" = "none")
   SELECT_INPUT_ENV_PREFIX <- "env_"
@@ -137,7 +148,12 @@ VoyageR <- function(data = NULL, browser = FALSE, envir = .GlobalEnv) {
 
       # Return the final vega spec JSON
       if (has_viz) {
-        shiny::stopApp(finalSpec_json)
+        final_output <- finalSpec_json # default to return raw json spec
+        if (format == "vegawidget") {
+          final_output <- vegawidget::as_vegaspec(finalSpec_json)
+        }
+
+        shiny::stopApp(final_output)
       } else {
         shiny::stopApp()
       }
