@@ -84,6 +84,7 @@ VoyageR <- function(data = NULL, format = "vegawidget", browser = FALSE, envir =
   # ==== Shiny UI & Server ====
   ui <- miniUI::miniPage(
     shinyjs::useShinyjs(),
+    shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/font-awesome-4.7.0/css/font-awesome.min.css"),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/style_voyager.css"),
     shiny::tags$link(rel = "stylesheet", type = "text/css", href = "www/style.css"),
 
