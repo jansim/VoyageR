@@ -3,11 +3,10 @@
 
 # 🚀 VoyageR
 
-VoyageR is a wrapper for the [Voyager
-2](https://github.com/vega/voyager) a JavaScript tool for exploratory
-data analysis that makes it easy to specify a
-[vega](https://github.com/vega/vega) chart specification, while
-generating and suggesting possible alternative charts.
+VoyageR is a wrapper for [Voyager 2](https://github.com/vega/voyager), a
+JavaScript tool for exploratory data analysis that makes it easy to
+specify a [vega](https://github.com/vega/vega) chart specification,
+while generating and suggesting possible alternative charts.
 
 ## 🧑‍🚀 Screenshot
 
